@@ -1,54 +1,58 @@
-# C4Guard - Dosya Arama Uygulaması
+# C4Guard - File Search Application
 
-C4Guard, kullanıcılara belirtilen bir dizinde dosya araması yapma ve sistem kaynak durumunu izleme imkanı sunan bir web uygulamasıdır. Proje, kullanıcıların istedikleri dosyaları hızlı ve etkili bir şekilde bulmalarını sağlarken, sistem kaynaklarının (CPU, bellek ve disk kullanımı) durumunu da gösterir. Ayrıca, bulunan dosyaların tehlike durumunu belirlemek için VirusTotal entegrasyonu içerir.
+C4Guard is a web application that allows users to search for files in a specified directory and monitor system resource status. The project enables users to quickly and effectively find the files they need while also displaying the status of system resources (CPU, memory, and disk usage). Additionally, it includes VirusTotal integration to determine the threat status of found files.
 
-## Özellikler
+## Features
 
-- **Dosya Arama**: Kullanıcıların belirttikleri dizinde dosya araması yapma.
-- **Sonuç Listesi**: Bulunan dosyaların isimleri, boyutları, durumları ve tehlike durumları hakkında detaylı bilgi.
-- **Sistem Durumu İzleme**: Uygulama, sistemin CPU, bellek ve disk kullanımlarını anlık olarak gösterir.
-- **VirusTotal Entegrasyonu**: Bulunan dosyaların güvenlik durumunu kontrol etme.
-- **Kullanıcı Dostu Arayüz**: Modern ve responsive bir tasarım ile kullanıcı dostu bir deneyim.
+- **File Search**: Allows users to search for files in specified directories.
+- **Results List**: Detailed information about found files, including names, sizes, statuses, and threat levels.
+- **System Status Monitoring**: Displays real-time CPU, memory, and disk usage.
+- **VirusTotal Integration**: Checks the security status of found files.
+- **User-Friendly Interface**: A modern and responsive design for an intuitive user experience.
 
-## Gereksinimler
+## Requirements
 
-Uygulama, aşağıdaki yazılımlar ve kütüphaneler ile çalışır:
+The application works with the following software and libraries:
 
-- **Python**: 3.6 veya üzeri
-- **Gerekli Kütüphaneler**:
-  - Flask: Web uygulaması geliştirme için
-  - aiohttp: Asenkron HTTP istemcisi
-  - beautifulsoup4: HTML ve XML dosyalarını parse etmek için
-  - numpy: Sayısal hesaplamalar için
-  - aiohappyeyeballs: Asenkron DNS çözümü
+- **Python**: Version 3.6 or higher
+- **Required Libraries**:
+  - Flask: For web application development
+  - aiohttp: Asynchronous HTTP client
+  - beautifulsoup4: For parsing HTML and XML files
+  - numpy: For numerical calculations
+  - aiohappyeyeballs: For asynchronous DNS resolution
 
-## Kullanım
-  Uygulama açıldığında, "Kök Dizin" alanına aramak istediğiniz dizini yazın (örn. C:\Users\DELL\Desktop\).
+## How to Get Your VirusTotal API Key
+  1. Go to the VirusTotal website.
+  2. Create a free account or log in if you already have one.
+  3. Navigate to your profile, where you will find your API key in the settings or account section.
+  4. Copy the API key and paste it into the appropriate lines in the app.py and file_search_module.py files.
 
-  "Dosya Adı" alanına aradığınız dosyanın adını yazın (örn. dosya.pdf).
+## Usage
+  1. When the application opens, enter the directory you want to search in the "Root Directory" field (e.g., C:\Users\DELL\Desktop\).
+  2. Enter the name of the file you are looking for in the "File Name" field (e.g., file.pdf).
+  3. Click the "Search" button to start the search.
+  4. The application will scan the specified directory and list the results in the "Results" section.
+  5. The "System Status" section will display real-time information about system resource usage.
 
-  "Ara" butonuna tıklayarak arama işlemini başlatın.
-  Uygulama, belirtilen dizinde dosyaları tarayacak ve sonuçları "Sonuçlar" bölümünde listeleyecektir.
-  "Sistem Durumu" bölümünde, sistem kaynak kullanımına dair anlık bilgiler görüntülenecektir.
-  Sonuçlar Tablosu
-  Arama sonuçları, dosya adı, boyut (KB), sonuç durumu, tehlike durumu ve VirusTotal linki ile birlikte tablo halinde gösterilecektir.
+## Results Table
+ 1. The search results will be displayed in a table format, including file name, size (KB), status, threat level, and a link to VirusTotal.
 
-## Kurulum
+## Setup Instructions
 
-1. **Depoyu Klonlama**: 
+1. **Clone the Repository**:
    ```bash
    git clone https://github.com/frkndncr/c4guard.git
    cd c4guard
 
-2. **Gerekli Kütüphaneleri Yükleme**:
+2. **Install Required Libraries**:
    ```bash
    pip install -r requirements.txt
 
-3. **Gerekli Kütüphaneleri Yükleme**:
+3. **Run the Application**:
    ```bash
    python app.py
 
-4. **Paketleri Kaldırma**:
+4. **Uninstall Packages (Optional)**:
    ```bash
     python uninstall.py
-
