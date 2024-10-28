@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C4Guard - Dosya Arama</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .box {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #343a40;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+        }
+        #loading {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 class="text-center">C4Guard - Dosya Arama</h1>
+
+    <div class="row">
+        <div class="col-md-4 box">
+            <h2>Arama Bilgileri</h2>
+            <form action="/search" method="POST" id="search-form">
+                <div class="form-group">
+                    <label for="directory">Kök Dizin:</label>
+                    <input type="text" class="form-control" id="directory" name="directory" required placeholder="C:\Users\DELL\Desktop\">
+                </div>
+                <div class="form-group">
+                    <label for="filename">Dosya Adı:</label>
+                    <input type="text" class="form-control" id="filename" name="filename" required placeholder="dosya.pdf">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Ara</button>
+            </form>
+        </div>
+
+        <div class="col-md-4 box">
+            <h2>Sonuçlar</h2>
+            <ul class="list-group" id="results-list">
+                <li class="list-group-item">Taranan Dosyalar: <span id="searched-files">0</span></li>
+                <li class="list-group-item">Bulunan Dosyalar: <span id="found-files">0</span></li>
+                <li class="list-group-item">Taramaya Hazır: <span id="ready-files">0</span></li>
+                <li class="list-group-item">İzleme Durumu: <span id="monitoring-status">Durduruldu</span></li>
+            </ul>
+            <button id="toggle-monitoring" class="btn btn-secondary btn-block">İzlemeyi Başlat</button>
+        </div>
+
+        <div class="col-md-4 box">
+            <h2>Sistem Durumu</h2>
+            <ul class="list-group" id="system-status">
+                <li class="list-group-item">CPU Kullanımı: <span id="cpu-usage">0</span>%</li>
+                <li class="list-group-item">Disk Kullanımı: <span id="disk-usage">0</span>%</li>
+                <li class="list-group-item">Bellek Kullanımı: <span id="memory-usage">0</span>%</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="box">
+        <h2>Sonuç Tablosu</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Dosya Adı</th>
+                    <th scope="col">Boyut (KB)</th>
+                    <th scope="col">Sonuç</th>
+                    <th scope="col">Tehlike Durumu</th>
+                    <th scope="col">VirusTotal</th>
+                </tr>
+            </thead>
+            <tbody id="results-table">
+                <!-- Sonuçlar burada listelenecek -->
+            </tbody>
+        </table>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            function fetchSystemStatus() {
+                $.get('/system-status', function(data) {
+                    console.log(data); // Burada verileri kontrol edin
+                    $('#cpu-usage').text(data.cpuUsage);
+                    $('#disk-usage').text(data.diskUsage);
+                    $('#memory-usage').text(data.memoryUsage);
+                }).fail(function() {
+                    console.error('Sistem durumu bilgisi alınamadı.');
+                });
+            }
+
+            // Her 1 saniyede bir sistemi kontrol et
+            setInterval(fetchSystemStatus, 10000);
+
+            // Sayfa yüklendiğinde ilk durumu al
+            fetchSystemStatus();
+
+            $('#search-form').on('submit', function(e) {
+                e.preventDefault(); // Varsayılan form gönderimini engelle
+
+                // Form verilerini topla
+                const directory = $('#directory').val();
+                const filename = $('#filename').val();
+
+                // Yükleme göstergesini göster
+                $('#loading').show();
+                $('#results-table').html('<tr><td colspan="5" class="text-center">Aranıyor...</td></tr>');
+
+                // AJAX isteği ile arama yap
+                $.post('/search', { directory, filename })
+                    .done(function(data) {
+                        console.log(data); // Gelen verileri kontrol et
+                        $('#searched-files').text(data.searchedFiles);
+                        $('#found-files').text(data.results.length); // Bulunan dosya sayısı
+
+                        if (data.results && data.results.length > 0) {
+                            updateResultsTable(data.results);
+                        } else {
+                            $('#results-table').html('<tr><td colspan="5" class="text-center">Hiçbir dosya bulunamadı.</td></tr>');
+                        }
+
+                        $('#loading').hide(); // Yükleme göstergesini gizle
+                    })
+                    .fail(function(jqXHR, textStatus, errorThrown) {
+                        $('#loading').hide();
+                        console.error("AJAX isteği başarısız oldu: ", textStatus, errorThrown);
+                        $('#results-table').html('<tr><td colspan="5" class="text-center">Bir hata oluştu. Lütfen tekrar deneyin.</td></tr>');
+                    });
+            });
+
+            function updateResultsTable(results) {
+                $('#results-table').empty(); // Önceki sonuçları temizle
+
+                results.forEach(result => {
+                    const virustotalLink = result.virustotalStatus 
+                        ? `<a href="${result.virustotalStatus.gui_link}" target="_blank">Analiz Sonucu</a>` 
+                        : 'Henüz analiz edilmedi.';
+
+                    // Tehlike durumu kontrolü
+                    const isDangerous = result.virustotalStatus && result.virustotalStatus.malicious_count > 0 
+                        ? 'Tehlikeli' 
+                        : 'Tehlikesiz';
+
+                    const newRow = `
+                        <tr>
+                            <td>${result.name}</td>
+                            <td>${(result.size).toFixed(2)} KB</td>
+                            <td>${result.result}</td>
+                            <td>${isDangerous}</td>
+                            <td>${virustotalLink}</td>
+                        </tr>
+                    `;
+                    $('#results-table').append(newRow);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
