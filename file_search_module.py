@@ -15,7 +15,7 @@ import time
 logging.basicConfig(filename='file_search.log', level=logging.INFO)
 
 # Virustotal API Key (Güvenlik için dışarıdan alınmalı)
-VIRUSTOTAL_API_KEY = os.getenv('2440f34c350a618b99ecaad71ce096871f7ac5b96a4128371160147951c92860')  # Çevresel değişken kullanımı
+VIRUSTOTAL_API_KEY = os.getenv('APİ_KEY')  # Çevresel değişken kullanımı
 VIRUSTOTAL_API_URL = 'https://www.virustotal.com/api/v3/files'
 
 # SQLite veritabanı bağlantısı
