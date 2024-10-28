@@ -27,7 +27,7 @@ def system_status():
     })
 
 def analyze_file_with_virustotal(file):
-    api_key = '2440f34c350a618b99ecaad71ce096871f7ac5b96a4128371160147951c92860'
+    api_key = 'APİ_KEY'
     url = "https://www.virustotal.com/api/v3/files"
 
     with open(file, 'rb') as f:
