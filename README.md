@@ -22,11 +22,33 @@ Uygulama, aşağıdaki yazılımlar ve kütüphaneler ile çalışır:
   - numpy: Sayısal hesaplamalar için
   - aiohappyeyeballs: Asenkron DNS çözümü
 
-## Kurulum
+## Kullanım
+  Uygulama açıldığında, "Kök Dizin" alanına aramak istediğiniz dizini yazın (örn. C:\Users\DELL\Desktop\).
 
-Bu projeyi Git kullanarak bilgisayarınıza klonlayın veya doğrudan ZIP dosyası olarak indirin. Daha sonra projenin kök dizininde gerekli bağımlılıkları yükleyin ve uygulamayı başlatın:
+  "Dosya Adı" alanına aradığınız dosyanın adını yazın (örn. dosya.pdf).
+
+  "Ara" butonuna tıklayarak arama işlemini başlatın.
+  Uygulama, belirtilen dizinde dosyaları tarayacak ve sonuçları "Sonuçlar" bölümünde listeleyecektir.
+  "Sistem Durumu" bölümünde, sistem kaynak kullanımına dair anlık bilgiler görüntülenecektir.
+  Sonuçlar Tablosu
+  Arama sonuçları, dosya adı, boyut (KB), sonuç durumu, tehlike durumu ve VirusTotal linki ile birlikte tablo halinde gösterilecektir.
+
+## Kurulum
 
 1. **Depoyu Klonlama**: 
    ```bash
-   git clone https://github.com/kullanici_adiniz/c4guard.git
+   git clone https://github.com/frkndncr/c4guard.git
    cd c4guard
+
+2. **Gerekli Kütüphaneleri Yükleme**:
+   ```bash
+   pip install -r requirements.txt
+
+3. **Gerekli Kütüphaneleri Yükleme**:
+   ```bash
+   python app.py
+
+4. **Paketleri Kaldırma**:
+   ```bash
+    python uninstall.py
+
