@@ -56,3 +56,6 @@ The application works with the following software and libraries:
 4. **Uninstall Packages (Optional)**:
    ```bash
     python uninstall.py
+
+## Screenshot
+![image](https://github.com/user-attachments/assets/b3d6f821-aaf9-4d80-9356-c2732dee63fb)
