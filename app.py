@@ -27,7 +27,7 @@ def system_status():
     })
 
 def analyze_file_with_virustotal(file):
-    api_key = 'APİ_KEY'
+    api_key = '2440f34c350a618b99ecaad71ce096871f7ac5b96a4128371160147951c92860'
     url = "https://www.virustotal.com/api/v3/files"
 
     with open(file, 'rb') as f:
@@ -123,4 +123,4 @@ def open_browser():
 
 if __name__ == "__main__":
     threading.Timer(1, open_browser).start()
-    C4Guard.run(host='0.0.0.0', port=5000, debug=True)
+    C4Guard.run(debug=True)  # Flask uygulamasını debug modunda çalıştırma
